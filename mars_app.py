@@ -15,13 +15,13 @@ conn = 'mongodb://localhost:27017'
 client = pymongo.MongoClient(conn)
 
 #connect to DB
-db = client.mars_scrape_db
+db = client.mars_db
 
-mongo = PyMongo(app, uri="mongodb://localhost:27017/mars_scrape_db")
+mongo = PyMongo(app, uri="mongodb://localhost:27017/mars_db")
 
 #creates a collection in the db and inserts documents
 
-db.mars_headlines.insert_many(
+db.listings.insert_many(
     [
         {
             'news_title': 'Another First: Perseverance Captures the Sounds of Driving on Mars'
@@ -55,27 +55,18 @@ db.mars_headlines.insert_many(
 @app.route('/')
 def index():
     #store collection in a list
-    mars_headlines = list(db.mars_headlines.find())
-    print(mars_headlines)
+    listings = list(db.listings.find())
+    # print(listings)
 
     #Return the template with headlines list passed
-    return render_template('index.html', mars_headlines=mars_headlines)
-
-
-
-
-
-# @app.route("/")
-# def index():
-#     listings = mongo.db.listings.find_one()
-#     return render_template("index.html", listings=listings)
+    return render_template('index.html', listings=listings) 
 
 
 @app.route("/scrape")
 def scraper():
-    mars_headlines = mongo.db.mars_headlines
-    mars_data = scrape_mars.scrape()
-    mars_headlines.update({}, mars_data, upsert=True)
+    listings = mongo.db.listings
+    listings_data = scrape_mars.scrape()
+    listings.update({}, listings_data, upsert=True)
     return redirect("/", code=302)
 
 
