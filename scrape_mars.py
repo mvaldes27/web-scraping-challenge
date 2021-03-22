@@ -8,7 +8,7 @@ import pandas as pd
 
 def init_browser():    
     executable_path = {'executable_path': ChromeDriverManager().install()}
-    browser = Browser('chrome', **executable_path, headless=False)
+    return Browser('chrome', **executable_path, headless=False)
 
 def scrape():
 
@@ -126,14 +126,9 @@ def scrape():
     listings.append({"news_p": news_p})
     listings.append({"image_url": image_url})
 
-    # flatten list of dictionary 
-
-    results = {} 
-    for d in listings: 
-        results.update(d) 
         
     # printing result 
-    listings = str(results)
+    # listings = str(results)
 
     return listings
     
