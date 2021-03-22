@@ -21,7 +21,7 @@ mongo = PyMongo(app, uri="mongodb://localhost:27017/mars_db")
 
 #creates a collection in the db and inserts documents
 
-db.listings.insert_many(
+db.listings.insert(
     [
         {
             'news_title': 'Another First: Perseverance Captures the Sounds of Driving on Mars'
