@@ -8,7 +8,8 @@ import pandas as pd
 
 def init_browser():    
     executable_path = {'executable_path': ChromeDriverManager().install()}
-    return Browser('chrome', **executable_path, headless=False)
+    browser = Browser('chrome', **executable_path, headless=False)
+    return browser
 
 def scrape():
 
@@ -123,18 +124,24 @@ def scrape():
         #Append into a list of dictionaries
         listings.append({"title": title, "full_img": full_img})
     
-    #append the rest of mars data
-    listings.append({"news_title": news_title})
-    listings.append({"news_p": news_p})
-    listings.append({"image_url": image_url})
-
-        
-    # printing result 
-    # listings = str(results)
-
-    return listings
+    # #append the rest of mars data
+    # listings.append({"news_title": news_title})
+    # listings.append({"news_p": news_p})
+    # listings.append({"image_url": image_url})
     
     browser.quit()
+
+    listings = {}
+    listings['news_title'] = news_title,
+    listings['news_p'] = news_p,
+    listings['image_url'] = image_url,
+    listings['mars_table'] = marshtml,
+    listings['hemisphere_list'] = listings
+
+    return listings
+
+
+
 
     
 
