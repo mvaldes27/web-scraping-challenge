@@ -15,9 +15,6 @@ def scrape():
 
     browser = init_browser()
 
-    # executable_path = {'executable_path': ChromeDriverManager().install()}
-    # browser = Browser('chrome', **executable_path, headless=False)
-
     #scrape Nasa site for first headline
     #---------------------------------------#
     #URL of page to be scraped
@@ -48,13 +45,11 @@ def scrape():
     # Parse HTML with Beautiful Soup
     soup = bs(html, 'html.parser')
 
-    mar_img = soup.find_all('img', class_='fancybox-image')
+    results = soup.find('img', class_='fancybox-image')['src']
 
-    mars_image = mar_img[0]["src"]
 
-    base_url = 'https://data-class-jpl-space.s3.amazonaws.com/JPL_Space/'
+    image_url = f'https://data-class-jpl-space.s3.amazonaws.com/JPL_Space/{results}'
 
-    image_url = base_url + mars_image
 
     #--------MARS Facts--------------#
 
@@ -70,8 +65,6 @@ def scrape():
     # Assign the columns `['Description', 'Value']`
     mars_df.columns = ['Description','Values']
 
-    # Set the index to the `Description` column without row indexing
-    # mars_df.set_index('Description', inplace=True)
 
     # Save html code to folder Assets
     marshtml = mars_df.to_html(index=False)
@@ -124,21 +117,18 @@ def scrape():
         #Append into a list of dictionaries
         listings.append({"title": title, "full_img": full_img})
     
-    # #append the rest of mars data
-    # listings.append({"news_title": news_title})
-    # listings.append({"news_p": news_p})
-    # listings.append({"image_url": image_url})
+   
     
     browser.quit()
 
-    listings = {}
-    listings['news_title'] = news_title,
-    listings['news_p'] = news_p,
-    listings['image_url'] = image_url,
-    listings['mars_table'] = marshtml,
-    listings['hemisphere_list'] = listings
+    mars_dict = {}
+    mars_dict['news_title'] = news_title,
+    mars_dict['news_p'] = news_p,
+    mars_dict['image_url'] = image_url,
+    mars_dict['mars_table'] = marshtml,
+    mars_dict['hemisphere_list'] = listings
 
-    return listings
+    return mars_dict
 
 
 

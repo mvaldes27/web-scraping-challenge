@@ -6,22 +6,19 @@ import sys
 
 sys.setrecursionlimit(10**6) 
 
-
-# from config import password
-
 #create instance of Flask app
 
 app = Flask(__name__)
 
+# Use flask_pymongo to set up mongo connection
 app.config["MONGO_URI"] = "mongodb://localhost:27017/mars_db"
 mongo = PyMongo(app)
-
 
 # Set route
 @app.route('/')
 def index():
     #store collection in a list
-    listings = mongo.db.listings.find_one()
+    listings = mongo.db.mars_db.find_one()
 
     #Return the template with headlines list passed
     return render_template('index.html', listings=listings) 
