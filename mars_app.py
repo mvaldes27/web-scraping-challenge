@@ -14,11 +14,13 @@ app = Flask(__name__)
 app.config["MONGO_URI"] = "mongodb://localhost:27017/mars_db"
 mongo = PyMongo(app)
 
+print(list(mongo.db.listings.find_one()))
+
 # Set route
 @app.route('/')
 def index():
     #store collection in a list
-    listings = mongo.db.mars_db.find_one()
+    listings = mongo.db.listings.find_one()
 
     #Return the template with headlines list passed
     return render_template('index.html', listings=listings) 

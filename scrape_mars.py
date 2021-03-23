@@ -5,6 +5,7 @@ import requests
 import pymongo
 from webdriver_manager.chrome import ChromeDriverManager
 import pandas as pd
+import time 
 
 def init_browser():    
     executable_path = {'executable_path': ChromeDriverManager().install()}
@@ -20,38 +21,50 @@ def scrape():
     #URL of page to be scraped
     url = 'https://mars.nasa.gov/news/'
     browser.visit(url)
+    time.sleep(1)
 
     # HTML object
     html = browser.html
     # Parse HTML with Beautiful Soup
     soup = bs(html, 'html.parser')
+
     # Retrieve all elements that contain header information
     headers = soup.find_all('div', class_='content_title')
     paragraphs = soup.find_all('div', class_='article_teaser_body')
 
     news_title = headers[1].text
     news_p = paragraphs[0].text
+    
+    #quit browser
+    browser.quit() 
 
 
     #--------MARS Image Scrape--------------#
 
     #URL of page to be scraped
+    browser = init_browser()
     url = 'https://data-class-jpl-space.s3.amazonaws.com/JPL_Space/index.html'
     browser.visit(url)
+    time.sleep(1)
 
     browser.links.find_by_partial_text('FULL IMAGE').click()
 
     html = browser.html
-    # Parse HTML with Beautiful Soup
-    soup = bs(html, 'html.parser')
+    soup = bs(html,'html.parser')
+
 
     results = soup.find('img', class_='fancybox-image')['src']
 
 
     image_url = f'https://data-class-jpl-space.s3.amazonaws.com/JPL_Space/{results}'
 
+    #quit browser
+    browser.quit() 
+
 
     #--------MARS Facts--------------#
+
+    browser = init_browser()
 
     #facts url
     facts_url = 'http://space-facts.com/mars/'
